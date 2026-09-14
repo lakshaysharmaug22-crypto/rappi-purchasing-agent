@@ -1,0 +1,13 @@
+
+*.db
+*.py[cod]
+.DS_Store
+.env
+.env.local
+.pytest_cache/
+.venv/
+__pycache__/
+dist/
+eval_results.json
+node_modules/
+venv/
