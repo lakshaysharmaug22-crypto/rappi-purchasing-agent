@@ -1,0 +1,71 @@
+# Rubric-as-code.
+#
+# Every agent decision is scored against these checks before anything is
+# written, and again against the *actual* record after it is written.
+# Deterministic checks run in Python and cannot be talked out of a failure
+# by an LLM. Judgement checks are scored by a second model, but only ever
+# downgrade a decision, never upgrade one.
+version: "1.2.0"
+
+deterministic:
+  - id: quantity_non_negative
+    severity: blocking
+    description: Ordered quantity is zero or positive and is an integer.
+
+  - id: moq_respected
+    severity: blocking
+    description: Quantity is zero, or at least the supplier minimum order quantity.
+
+  - id: lot_size_respected
+    severity: blocking
+    description: Quantity is an exact multiple of the supplier lot size.
+
+  - id: supplier_max_respected
+    severity: blocking
+    description: Quantity does not exceed the supplier's maximum units per order.
+
+  - id: budget_respected
+    severity: blocking
+    description: Order value fits inside the node's remaining budget for the period.
+
+  - id: storage_respected
+    severity: blocking
+    description: Incoming volume fits the node's free storage after the buffer.
+
+  - id: supplier_active
+    severity: blocking
+    description: The chosen supplier is active and lists the SKU.
+
+  - id: perishable_cover_respected
+    severity: blocking
+    description: For perishables, cover does not exceed the allowed fraction of shelf life.
+
+  - id: quantity_matches_computed_need
+    severity: warning
+    tolerance: 0.15
+    description: Final quantity is within tolerance of the independently computed need.
+
+  - id: no_duplicate_open_po
+    severity: warning
+    description: No overlapping open PO for the same SKU and node in the same cycle.
+
+  - id: evidence_complete
+    severity: blocking
+    description: Inventory, demand, open POs, supplier terms, budget and storage were all read.
+
+judgement:
+  - id: reasoning_cites_evidence
+    description: The stated reasoning references the actual numbers that were retrieved.
+  - id: no_unsupported_claims
+    description: The reasoning asserts nothing that the evidence does not contain.
+  - id: constraint_tradeoff_explained
+    description: Where a constraint bound the decision, the reasoning says which one and why.
+  - id: decision_matches_reasoning
+    description: The chosen action is the one the stated reasoning actually supports.
+
+scoring:
+  # Any blocking failure forces the decision to a human, whatever the model says.
+  blocking_failure_action: escalate
+  # Warnings reduce confidence rather than block.
+  warning_confidence_penalty: 0.15
+  judgement_failure_penalty: 0.20
