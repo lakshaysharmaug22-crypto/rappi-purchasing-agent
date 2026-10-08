@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.orm import Session
 
 from ..db.models import Budget, POStatus, PurchaseOrder
@@ -107,9 +107,12 @@ def create_purchase_order(
     db.add(po)
 
     # Commit budget against what the supplier actually confirmed.
-    budget = db.scalar(select(Budget).where(Budget.node_id == node_id, Budget.period == period))
-    if budget:
-        budget.committed_amount += response.confirmed_quantity * supplier["unit_price"]
+    # Atomic in SQL: the database applies the increment, so concurrent runs cannot lose an update.
+    db.execute(
+        update(Budget)
+        .where(Budget.node_id == node_id, Budget.period == period)
+        .values(committed_amount=Budget.committed_amount + response.confirmed_quantity * supplier["unit_price"])
+    )
 
     db.commit()
 
