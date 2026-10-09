@@ -128,15 +128,15 @@ export function PositionBar({ computed, evidence }) {
 
       <div className="position-legend">
         <span>
-          <i className="swatch" style={{ background: "#b9c0c7" }} />
+          <i className="swatch" style={{ background: "var(--seg-on-hand)" }} />
           On hand, unreserved <b>{n(onHand)}</b>
         </span>
         <span>
-          <i className="swatch" style={{ background: "#d4d9de" }} />
+          <i className="swatch" style={{ background: "var(--seg-inbound)" }} />
           Already inbound <b>{n(incoming)}</b>
         </span>
         <span>
-          <i className="swatch" style={{ background: "#fdecea" }} />
+          <i className="swatch" style={{ background: "var(--signal-wash)" }} />
           Gap to target <b>{n(gap)}</b>
         </span>
         <span>

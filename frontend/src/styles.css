@@ -3,22 +3,30 @@
    because every number on this screen is meant to be compared to another. */
 
 :root {
-  --ink: #14161a;
-  --ink-soft: #4a5057;
-  --ink-faint: #7b828a;
-  --page: #f4f5f6;
-  --paper: #ffffff;
-  --rule: #e0e3e6;
-  --rule-strong: #c6cbd1;
+  color-scheme: dark;
 
-  --signal: #e0352b;
-  --signal-wash: #fdecea;
-  --hold: #9a6206;
-  --hold-wash: #fdf3e2;
-  --confirm: #14663f;
-  --confirm-wash: #e7f4ec;
-  --neutral-wash: #eef0f2;
+  --ink: #e6e9ee;
+  --ink-soft: #a9b1bb;
+  --ink-faint: #737d89;
+  --page: #0b0e12;
+  --paper: #13171d;
+  --sunken: #0f1318;
+  --rule: #222831;
+  --rule-strong: #343c47;
 
+  --signal: #ff6b5e;
+  --signal-wash: #2b1716;
+  --hold: #e5a842;
+  --hold-wash: #2a2010;
+  --confirm: #46c48a;
+  --confirm-wash: #10261b;
+  --neutral-wash: #1b2129;
+
+  --seg-on-hand: #5d6874;
+  --seg-inbound: #343c46;
+  --seg-inbound-alt: #262d35;
+
+  --mono: "JetBrains Mono", Consolas, monospace;
   --r: 6px;
   --gutter: 22px;
 }
@@ -53,7 +61,9 @@ h3 {
 }
 
 h1 {
-  font-size: 17px;
+  font-family: var(--mono);
+  font-size: 16px;
+  letter-spacing: -0.02em;
 }
 h2 {
   font-size: 15px;
@@ -212,7 +222,7 @@ input:focus-visible {
 
 .primary {
   background: var(--ink);
-  color: #fff;
+  color: var(--page);
   border: 1px solid var(--ink);
   border-radius: var(--r);
   padding: 8px 18px;
@@ -367,15 +377,15 @@ input:focus-visible {
 }
 
 .seg.on-hand {
-  background: #b9c0c7;
+  background: var(--seg-on-hand);
 }
 .seg.incoming {
   background: repeating-linear-gradient(
     45deg,
-    #d4d9de,
-    #d4d9de 4px,
-    #e6e9ec 4px,
-    #e6e9ec 8px
+    var(--seg-inbound),
+    var(--seg-inbound) 4px,
+    var(--seg-inbound-alt) 4px,
+    var(--seg-inbound-alt) 8px
   );
 }
 .seg.gap {
@@ -496,7 +506,7 @@ input:focus-visible {
   margin: 8px 0 0;
   border: 1px solid var(--rule);
   border-radius: var(--r);
-  background: #fafbfb;
+  background: var(--sunken);
   padding: 10px 12px;
   font-size: 12.5px;
   color: var(--ink-soft);
@@ -605,7 +615,7 @@ input:focus-visible {
 .approve {
   background: var(--confirm);
   border: 1px solid var(--confirm);
-  color: #fff;
+  color: var(--page);
   border-radius: var(--r);
   padding: 6px 14px;
   font-weight: 600;
